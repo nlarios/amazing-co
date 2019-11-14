@@ -1,0 +1,13 @@
+db:
+  host: ${DB_HOST}
+  port: ${DB_PORT}
+  name: ${DB_NAME}
+  username: ${DB_USERNAME}
+  password: ${DB_PASSWORD}
+  hibernate:
+    properties:
+      "hibernate.show_sql": "true"
+      "hibernate.hbm2ddl.auto": "validate"
+      "hibernate.connection.pool_size": "20"
+server:
+  port: 8080
