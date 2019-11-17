@@ -16,7 +16,14 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.tradeshift.amazing</groupId>
+            <artifactId>amazing-domain</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

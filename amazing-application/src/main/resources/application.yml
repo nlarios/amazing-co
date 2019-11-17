@@ -1,13 +1,35 @@
-db:
-  host: ${DB_HOST}
-  port: ${DB_PORT}
-  name: ${DB_NAME}
-  username: ${DB_USERNAME}
-  password: ${DB_PASSWORD}
-  hibernate:
-    properties:
-      "hibernate.show_sql": "true"
-      "hibernate.hbm2ddl.auto": "validate"
-      "hibernate.connection.pool_size": "20"
+spring:
+  profiles:
+    active: development
+# Spring Boot configuration
+
+  # Database
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/amazing
+    username: amazing_user
+    password: am4z1ng$
+  # JPA properties
+  jpa:
+    hibernate:
+      ddl-auto: none
+      properties:
+        "hibernate.show_sql": "true"
+        "hibernate.hbm2ddl.auto": "validate"
+        "hibernate.connection.pool_size": "20"
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+    generate-ddl: false
+# Logger configuration
+logging:
+  pattern:
+    console: "%d %-5level %logger : %msg%n"
+  level:
+    org.springframework: INFO
+    org.hibernate: DEBUG
+# Server configuration
 server:
   port: 8080
+

@@ -6,8 +6,9 @@
         <groupId>com.tradeshift.amazing</groupId>
         <artifactId>amazing-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
+
     <groupId>com.tradeshift.amazing</groupId>
     <artifactId>amazing-application</artifactId>
     <version>1.0-SNAPSHOT</version>
@@ -17,10 +18,17 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.tradeshift.amazing</groupId>
+            <artifactId>amazing-core</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

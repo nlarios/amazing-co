@@ -18,7 +18,10 @@
         <postgresql.version>42.2.6</postgresql.version>
         <jackson.version>2.10.0</jackson.version>
         <spring-data.version>2.2.1.RELEASE</spring-data.version>
-     </properties>
+        <amazing-domain.version>1.0-SNAPSHOT</amazing-domain.version>
+        <amazing-core.version>1.0-SNAPSHOT</amazing-core.version>
+        <postgresql.version>42.2.6</postgresql.version>
+    </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -47,7 +50,21 @@
                 <artifactId>spring-data-jpa</artifactId>
                 <version>${spring-data.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.tradeshift.amazing</groupId>
+                <artifactId>amazing-domain</artifactId>
+                <version>${amazing-domain.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.tradeshift.amazing</groupId>
+                <artifactId>amazing-core</artifactId>
+                <version>${amazing-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

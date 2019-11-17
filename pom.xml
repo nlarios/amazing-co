@@ -24,8 +24,8 @@
         <module>amazing-parent</module>
         <module>amazing-domain</module>
         <module>amazing-persistence</module>
-        <module>amazing-application</module>
         <module>amazing-core</module>
+        <module>amazing-application</module>
     </modules>
 
 
