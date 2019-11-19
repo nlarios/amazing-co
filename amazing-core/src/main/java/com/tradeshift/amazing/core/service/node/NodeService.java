@@ -10,6 +10,6 @@ public interface NodeService {
 
     List<Node> findAllNodeDescendants(String id);
 
-    Node changeParentNode(String nodeId, String newParentId);
+    Node updateParentNode(String nodeId, String newParentId);
 
 }

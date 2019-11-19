@@ -5,6 +5,7 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
+@Table(name="node")
 public class Node {
 
     @Id
@@ -15,8 +16,11 @@ public class Node {
     private Integer height;
 
     @Column
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    private UUID parentId;
+    private String name;
+
+    @JoinColumn(name="parent_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Node parentNode;
 
     public Node(final UUID id) {
         this.id = id;
@@ -25,6 +29,8 @@ public class Node {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="root_id")
     private Node rootNode;
+
+    public Node() {}
 
     public UUID getId() {
         return id;
@@ -50,11 +56,19 @@ public class Node {
         this.rootNode = rootNode;
     }
 
-    public UUID getParentId() {
-        return parentId;
+    public Node getParentNode() {
+        return parentNode;
     }
 
-    public void setParentId(UUID parentId) {
-        this.parentId = parentId;
+    public void setParentNode(Node parentNode) {
+        this.parentNode = parentNode;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

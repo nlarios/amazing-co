@@ -1,12 +1,11 @@
 spring:
-  profiles:
-    active: development
-# Spring Boot configuration
-
+  redis:
+    host: redis
+  # Spring Boot configuration
   # Database
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/amazing
+    url: "jdbc:postgresql://localhost:5433/amazing"
     username: amazing_user
     password: am4z1ng$
   # JPA properties
@@ -32,4 +31,6 @@ logging:
 # Server configuration
 server:
   port: 8080
+
+
 

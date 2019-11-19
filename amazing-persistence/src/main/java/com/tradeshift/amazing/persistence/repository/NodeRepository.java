@@ -1,6 +1,7 @@
 package com.tradeshift.amazing.persistence.repository;
 
 import com.tradeshift.amazing.domain.entity.Node;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -13,22 +14,15 @@ import java.util.UUID;
 public interface NodeRepository extends CrudRepository<Node, UUID> {
 
 
-    @Query("")
-    Collection<Node> findLeafNodes();
 
+    @Query("SELECT n FROM Node n JOIN com.tradeshift.amazing.domain.entity.Hierarchy nh ON n.id = nh.hierarchyKey.descendant.id WHERE nh.hierarchyKey.ancestor.id = ?1 AND nh.depth > 0")
+    List<Node> findAllDescendantsById(UUID id);
 
-    List<Node> findPathForNode(Node node);
+    @Query("SELECT n FROM Node n JOIN com.tradeshift.amazing.domain.entity.Hierarchy nh ON n.id = nh.hierarchyKey.descendant.id WHERE nh.hierarchyKey.ancestor.id = ?1 AND nh.depth > 0")
+    List<Node> findAllAncestorsById(UUID id);
 
-    @Query("SELECT child FROM Node node, Node child " +
-            "WHERE (child.left BETWEEN node.left AND node.right) " +
-            "AND (child.right BETWEEN node.left AND node.right) " +
-            "AND child <> ?1 " +
-            "AND node = ?1 ORDER BY child.left")
-    List<Node> findChildNodesForNode(Node node);
+    Node findNodeById(UUID id);
 
-
-    @Query("SELECT count(parent) FROM Node node, Node parent " +
-            "WHERE node.left BETWEEN parent.left AND parent.right " +
-            "AND parent <> ?1 AND node = ?1")
-    int findNodeDepth(Node node);
+    @Query("UPDATE Node n SET n.parentNode.id = ?1 WHERE n.id = ?2")
+    Node updateNodeParent(UUID parentId,UUID nodeId);
 }

@@ -6,21 +6,26 @@
         <artifactId>amazing-root</artifactId>
         <groupId>com.tradeshift.amazing</groupId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
+
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <artifactId>amazing-parent</artifactId>
 
     <properties>
         <jpa-api.version>2.2</jpa-api.version>
-        <hibernate.version>5.4.4.Final</hibernate.version>
+        <org.hibernate.version>5.2.12.Final</org.hibernate.version>
+        <org.hibernate.hibernate-tools.version>5.2.6.Final</org.hibernate.hibernate-tools.version>
         <hibernate-annotations.version>3.5.6-Final</hibernate-annotations.version>
         <postgresql.version>42.2.6</postgresql.version>
         <jackson.version>2.10.0</jackson.version>
         <spring-data.version>2.2.1.RELEASE</spring-data.version>
         <amazing-domain.version>1.0-SNAPSHOT</amazing-domain.version>
         <amazing-core.version>1.0-SNAPSHOT</amazing-core.version>
-        <postgresql.version>42.2.6</postgresql.version>
+        <amazing-persistence.version>1.0-SNAPSHOT</amazing-persistence.version>
+        <model-mapper.version>2.3.5</model-mapper.version>
+        <swagger.version>2.9.2</swagger.version>
     </properties>
 
     <dependencyManagement>
@@ -41,11 +46,6 @@
                 <version>${hibernate-annotations.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.postgresql</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>${postgresql.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-jpa</artifactId>
                 <version>${spring-data.version}</version>
@@ -61,9 +61,29 @@
                 <version>${amazing-core.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.tradeshift.amazing</groupId>
+                <artifactId>amazing-persistence</artifactId>
+                <version>${amazing-persistence.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>${postgresql.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.modelmapper</groupId>
+                <artifactId>modelmapper</artifactId>
+                <version>${model-mapper.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

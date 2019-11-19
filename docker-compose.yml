@@ -1,48 +1,52 @@
 version: "3.2"
 services:
-  app-server:
-    # Configuration for building the docker image for the backend service
-    build:
-      context: amazing-application # Use an image built from the specified dockerfile in the `polling-app-server` directory.
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080" # Forward the exposed port 8080 on the container to port 8080 on the host machine
-    restart: always
-    depends_on:
-      - amazing-db # This service depends on mysql. Start that first.
-      - amazing-redis
-    env_file:
-      - ./Docker/amazing-app/amazing-app.env
-    environment: # Pass environment variables to the service
-      SPRING_DATASOURCE_URL: dbc:postgresql://localhost:5432/${POSTGRES_DBNAME}
-      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
-      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASS}
-    networks: # Networks to join (Services on the same network can communicate with each other using their name)
-      - backend
+#  app-server:
+#          #    image: amazing-application
+#          # Configuration for building the docker image for the backend service
+#          build:
+#            context: . # Use an image built from the specified dockerfile in the `polling-app-server` directory.
+#            dockerfile: ./amazing-application/Dockerfile
+#          ports:
+#            - "8080:8080" # Forward the exposed port 8080 on the container to port 8080 on the host machine
+#          restart: always
+#          links:
+#            - amazing-redis
+#          depends_on:
+#            - amazing-db
+#            - amazing-redis
+#          env_file:
+#            - ./Docker/amazing-app/amazing-app.env
+##    environment: # Pass environment variables to the service
+##      SPRING_DATASOURCE_URL: dbc:postgresql://localhost:5432/${POSTGRES_DBNAME}
+##      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+##      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASS}
+#    networks: # Networks to join (Services on the same network can communicate with each other using their name)
+#      - default
   amazing-db:
     container_name: amazing-db
     image: postgres:latest
     env_file:
       - ./Docker/amazing-db/amazing-db.env
+#    environment:
+#      - POSTGRES_USER=amazing_user
+#      - POSTGRES_PASSWORD=am4z1ng$
+#      - POSTGRES_DB=amazing
     ports:
-      - ${POSTGRES_PORT}:5432
+      - 5433:5432
     volumes:
-      - ${POSTGRES_VOLUME}:/var/lib/postgresql/data
-      -./Docker/amazing-db/init_scripts/:/docker-entrypoint-initdb.d/
+      - ./Docker/amazing-db/init_scripts/:/docker-entrypoint-initdb.d/
     networks:
-      - backend
+      - default
   amazing-redis:
     container_name: amazing-cache
-    image: redis:latest
+    image: redis:alpine
+    hostname: redis
     env_file:
       - ./Docker/amazing-cache/amazing-cache.env
     ports:
-      - ${REDIS_PORT}
-      environment:
-        - REDIS_REPLICATION_MODE=master
-        - REDIS_PASSWORD=${REDIS_PASSWORD}
-      volumes:
-        - ${REDIS_VOLUME}:/
-    command: mongod
+      - 6379:6379
+#    environment:
+#      - REDIS_REPLICATION_MODE=master
+#      - REDIS_PASSWORD=${REDIS_PASSWORD}
     networks:
-      - backend
+      - default

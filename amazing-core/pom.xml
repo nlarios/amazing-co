@@ -6,6 +6,7 @@
         <artifactId>amazing-parent</artifactId>
         <groupId>com.tradeshift.amazing</groupId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath>../amazing-parent/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -15,6 +16,18 @@
         <dependency>
             <groupId>com.tradeshift.amazing</groupId>
             <artifactId>amazing-domain</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.tradeshift.amazing</groupId>
+            <artifactId>amazing-persistence</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
         </dependency>
     </dependencies>
 
