@@ -8,8 +8,8 @@ import java.util.UUID;
 public interface NodeService {
     Node insertNode(Long id, Long parentId);
 
-    List<Node> findAllNodeDescendants(String id);
+    List<Node> findAllNodeDescendants(Long id);
 
-    Node updateParentNode(String nodeId, String newParentId);
+    Integer updateParentNode(Long nodeId, Long newParentId);
 
 }

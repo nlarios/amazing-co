@@ -1,40 +1,39 @@
 package com.tradeshift.amazing.domain.dto;
 
-import java.util.UUID;
 
 public class NodeDTO {
 
-    private UUID id;
+    private Long id;
 
-    private UUID parentId;
+    private Long parentId;
 
-    private UUID rootNodeId;
+    private Long rootNodeId;
 
     private String name;
 
     private Integer height;
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public UUID getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 
-    public void setParentId(UUID parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 
-    public UUID getRootNodeId() {
+    public Long getRootNodeId() {
         return rootNodeId;
     }
 
-    public void setRootNodeId(UUID rootNodeId) {
+    public void setRootNodeId(Long rootNodeId) {
         this.rootNodeId = rootNodeId;
     }
 

@@ -9,7 +9,7 @@ import java.util.UUID;
 public class Hierarchy implements Serializable {
 
    @EmbeddedId
-   private HierarchyKey hierarchyKey;
+    private HierarchyKey hierarchyKey;
 
     private Integer depth;
 
@@ -21,21 +21,6 @@ public class Hierarchy implements Serializable {
         this.depth = depth;
     }
 
-    //    public Node getAncestor() {
-//        return ancestor;
-//    }
-//
-//    public void setAncestor(Node ancestor) {
-//        this.ancestor = ancestor;
-//    }
-//
-//    public Node getDescendant() {
-//        return descendant;
-//    }
-//
-//    public void setDescendant(Node descendant) {
-//        this.descendant = descendant;
-//    }
 
 
     public HierarchyKey getHierarchyKey() {

@@ -1,20 +1,17 @@
 package com.tradeshift.amazing.domain.entity;
 
-import javax.persistence.Embeddable;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Embeddable
 public class HierarchyKey implements Serializable {
 
     @JoinColumn(name="ancestor_id", referencedColumnName = "id")
-    @OneToOne
+    @ManyToOne
     private Node ancestor;
 
     @JoinColumn(name="descendant_id", referencedColumnName = "id")
-    @OneToOne
+    @ManyToOne
     private Node descendant;
 
     public HierarchyKey() {

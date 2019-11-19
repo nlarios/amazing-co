@@ -1,20 +1,20 @@
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+-- CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- grant all privileges on database amazing to amazing_user;
 
 CREATE TABLE node (
-  id uuid DEFAULT uuid_generate_v4(),
+  id SERIAL,
   name VARCHAR(15),
-  parent_id uuid,
-  root_id uuid NOT NULL,
-  height INT NOt Null,
+  parent_id INTEGER,
+  root_id INTEGER NOT NULL,
+  height INT NOT Null,
   PRIMARY KEY(id),
   CONSTRAINT fk_node_parent_id FOREIGN KEY (parent_id) REFERENCES node(id),
   CONSTRAINT fk_node_root_id FOREIGN KEY (parent_id) REFERENCES node(id)
 );
 
 CREATE TABLE node_hierarchy (
-  ancestor_id uuid NOT NULL,
-  descendant_id uuid NOT NULL,
+  ancestor_id INTEGER NOT NULL,
+  descendant_id INTEGER NOT NULL,
   depth INT NOT NULL,
   PRIMARY KEY(ancestor_id, descendant_id),
   CONSTRAINT fk_hierarchy_node_ancestor_id FOREIGN KEY (ancestor_id) REFERENCES node(id),
@@ -23,24 +23,24 @@ CREATE TABLE node_hierarchy (
 
 DO $$
 
-DECLARE root uuid;
-DECLARE first_a uuid;
-DECLARE first_b uuid;
-DECLARE second_a uuid;
-DECLARE second_b uuid;
-DECLARE third_a uuid;
+DECLARE root INTEGER;
+DECLARE first_a INTEGER;
+DECLARE first_b INTEGER;
+DECLARE second_a INTEGER;
+DECLARE second_b INTEGER;
+DECLARE third_a INTEGER;
 
 BEGIN
 -- add some node
 -- root
-INSERT INTO node VALUES ('32c28dac-47ff-47cc-a8e2-b26d89333985', 'root',NULL,  '32c28dac-47ff-47cc-a8e2-b26d89333985', 0) RETURNING id INTO root;
+INSERT INTO node VALUES (0, 'root', NULL,  0, 0) RETURNING id INTO root;
 -- child node- height 1
 
 INSERT INTO node (parent_id, name, root_id, height)
 VALUES (root,'a', root, 1) RETURNING id INTO first_a;
 
 INSERT INTO node (parent_id, name, root_id, height)
-VALUES (first_a,'b', root, 1) RETURNING id INTO first_b;
+VALUES (root,'b', root, 1) RETURNING id INTO first_b;
 
 INSERT INTO node (parent_id, name, root_id, height)
 VALUES (first_a, 'c', root, 2) RETURNING id INTO second_a;

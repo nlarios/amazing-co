@@ -7,6 +7,8 @@ import com.tradeshift.amazing.persistence.repository.HierarchyRepository;
 import com.tradeshift.amazing.persistence.repository.NodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -31,36 +33,54 @@ public class AmazingNodeService implements NodeService{
     }
 
     @Override
-    public List<Node> findAllNodeDescendants(String id) {
-        UUID nodeId = UUID.fromString(id);
-        return nodeRepository.findAllDescendantsById(nodeId);
+    public List<Node> findAllNodeDescendants(Long id) {
+        return nodeRepository.findAllDescendantsById(id);
     }
 
     @Transactional
     @Override
-    public Node updateParentNode(String id, String newParentId) {
-        UUID nodeId = UUID.fromString(id);
+    public Integer updateParentNode(Long nodeId, Long newParentId) {
+
         Node node = nodeRepository.findNodeById(nodeId);
-        UUID parentId = UUID.fromString(newParentId);
+        Node newParentNode = nodeRepository.findNodeById(newParentId);
 
         List<Hierarchy> ancestors = hierarchyRepository.findAllAncestorsById(nodeId);
         List<Hierarchy> descendants = hierarchyRepository.findAllDescendantsById(nodeId);
 
         List<Hierarchy> newSubtreeHierarchies = buildNewHierarchies(ancestors, descendants, node);
 
-        List<UUID> descendantIds = descendants.stream()
-                .map(d -> d.getHierarchyKey().getDescendant().getId()).collect(Collectors.toList());
+        deleteOldHierarchies(descendants, nodeId);
 
-        hierarchyRepository.deleteOldHierarchies(descendantIds, nodeId);
+        saveNewHierarchies(newSubtreeHierarchies);
 
-        newSubtreeHierarchies.stream().forEach( hierarchy -> {
-            hierarchyRepository.save(hierarchy);
+        updateHeightsOfDescendants(descendants, newParentNode);
+
+        Integer result = nodeRepository.updateNodeParent(newParentNode, nodeId, newParentNode.getHeight() + 1);
+
+        return result;
+    }
+
+    void updateHeightsOfDescendants(List<Hierarchy> descendants, Node parentNode){
+        descendants.stream().forEach(descendant -> {
+            nodeRepository.updateNodeHeightById(descendant.getHierarchyKey().getDescendant().getId(), parentNode.getHeight() + descendant.getDepth() + 1);
         });
 
-        Node resultNode = nodeRepository.updateNodeParent(parentId, nodeId);
-
-        return resultNode;
     }
+
+    void saveNewHierarchies(List<Hierarchy> hierarchies) {
+        hierarchies.stream().forEach( hierarchy -> {
+            hierarchyRepository.save(hierarchy);
+        });
+    }
+
+    void deleteOldHierarchies(List<Hierarchy> descendants, Long nodeId){
+        List<Long> descendantIds = descendants.stream()
+                .map(d -> d.getHierarchyKey().getDescendant().getId()).collect(Collectors.toList());
+        System.out.println(descendantIds);
+        hierarchyRepository.deleteOldHierarchies(descendantIds, nodeId);
+    }
+
+
 
     private List<Hierarchy> buildNewHierarchies(List<Hierarchy> ancestors, List<Hierarchy> descendants, Node node){
         List<Hierarchy> newSubtreeHierarchies = new ArrayList<>();

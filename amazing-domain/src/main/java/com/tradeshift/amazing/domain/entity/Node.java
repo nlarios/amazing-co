@@ -1,6 +1,8 @@
 package com.tradeshift.amazing.domain.entity;
 
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.UUID;
 
@@ -9,8 +11,8 @@ import java.util.UUID;
 public class Node {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue
+    private Long id;
 
     @Column
     private Integer height;
@@ -22,9 +24,6 @@ public class Node {
     @ManyToOne(fetch = FetchType.LAZY)
     private Node parentNode;
 
-    public Node(final UUID id) {
-        this.id = id;
-    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="root_id")
@@ -32,11 +31,20 @@ public class Node {
 
     public Node() {}
 
-    public UUID getId() {
+//    public UUID getId() {
+//        return id;
+//    }
+//
+//    public void setId(UUID id) {
+//        this.id = id;
+//    }
+
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
