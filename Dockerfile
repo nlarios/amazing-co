@@ -1,66 +1,33 @@
 ####################################### Build stage #######################################
-FROM maven:3.6.0-jdk-11-slim AS maven-package-stage
+FROM maven:3.6.2-jdk-11-slim AS maven-package-stage
 
 # Copy poms
-COPY ../../../pom.xml /build/
+COPY ./pom.xml /build/amazing-root/
+COPY ./amazing-parent/pom.xml /build/amazing-root/amazing-parent/
+COPY ./amazing-domain/pom.xml /build/amazing-root/amazing-domain/
+COPY ./amazing-persistence/pom.xml /build/amazing-root/amazing-persistence/
+COPY ./amazing-core/pom.xml /build/amazing-root/amazing-core/
+COPY ./amazing-application/pom.xml /build/amazing-root/amazing-application/
 
-#COPY ../../../piseto-web-commons/pom.xml /build/piseto-web-commons/
-
-COPY ../../pom.xml /build/piseto-content/
-COPY ../../piseto-content-parent/pom.xml /build/piseto-content/piseto-content-parent/
-COPY ../../piseto-image-utils/pom.xml /build/piseto-content/piseto-image-utils/
-COPY ../pom.xml /build/piseto-content/piseto-content-management/
-
-# Download dependenies for docker caching
-#WORKDIR /build/piseto-web-commons/
-#RUN mvn dependency:go-offline
-
-WORKDIR /build/piseto-content/piseto-content-parent/
+WORKDIR /build/amazing-root/amazing-parent/
 RUN mvn dependency:go-offline
 
 #Copy sources
-#COPY ../../../piseto-web-commons/src /build/piseto-web-commons/src/
-COPY ../../piseto-image-utils/src /build/piseto-content/piseto-image-utils/src/
-COPY ../src /build/piseto-content/piseto-content-management/src/
+COPY ./amazing-domain/src /build/amazing-root/amazing-domain/src/
+COPY ./amazing-persistence/src /build/amazing-root/amazing-persistence/src/
+COPY ./amazing-core/src /build/amazing-root/amazing-core/src/
+COPY ./amazing-application/src /build/amazing-root/amazing-application/src/
 
 # Build project
-WORKDIR /build/amazing-application/
-RUN mvn clean package -pl gr.cite.piseto:piseto-content-management -am -DskipTests
+WORKDIR /build/amazing-root/
+RUN mvn clean package -DskipTests
 
 
 ####################################### Run Stage #######################################
 FROM adoptopenjdk/openjdk11:jdk-11.0.4_11-slim
 
-#Arguments
-ARG ARG_CONTENT_MANAGEMENT_LOG_PATH
+ARG JAR_FILE=target/amazing-application-1.0-SNAPSHOT.jar
 
-ARG ARG_CONTENT_MANAGEMENT_SERVER_PORT
-ARG ARG_CONTENT_MANAGEMENT_SERVLET_PATH
+COPY --from=maven-package-stage /build/amazing-root/amazing-application/${JAR_FILE} app.jar
 
-ARG ARG_CONTENT_MANAGEMENT_DB_HOST
-ARG ARG_CONTENT_MANAGEMENT_DB_PORT
-
-ARG ARG_CONTENT_MANAGEMENT_FILE_STORAGE_BASE_PATH
-
-# Environment variables
-ENV LOG_PATH=${ARG_CONTENT_MANAGEMENT_LOG_PATH}
-
-ENV SERVER_PORT=${ARG_CONTENT_MANAGEMENT_SERVER_PORT}
-ENV SERVLET_PATH=${ARG_CONTENT_MANAGEMENT_SERVLET_PATH}
-
-ENV DB_HOST=${ARG_CONTENT_MANAGEMENT_DB_HOST}
-ENV DB_PORT=${ARG_CONTENT_MANAGEMENT_DB_PORT}
-
-ENV FILE_STORAGE_BASE_PATH=${ARG_CONTENT_MANAGEMENT_FILE_STORAGE_BASE_PATH}
-
-VOLUME ${FILE_STORAGE_BASE_PATH}
-VOLUME ${LOG_PATH}
-
-EXPOSE ${SERVER_PORT}
-
-ARG JAR_FILE=target/content-management.jar
-
-#COPY piseto-content/piseto-content-management/${JAR_FILE} ${JAR_FILE}
-COPY --from=maven-package-stage /build/piseto-content/piseto-content-management/${JAR_FILE} ${JAR_FILE}
-
-ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-Djava.security.egd=file:/dev/./urandom", "-jar", "target/content-management.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
