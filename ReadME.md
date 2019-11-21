@@ -1,6 +1,9 @@
 # Amazing API
 
 ## Install & run
+
+Inside project's base folder run:
+
 `docker-compose up`
 
 ## Application Structure
