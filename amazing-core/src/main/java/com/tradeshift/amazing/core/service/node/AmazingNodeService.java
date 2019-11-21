@@ -77,7 +77,10 @@ public class AmazingNodeService implements NodeService{
         List<Long> descendantIds = descendants.stream()
                 .map(d -> d.getHierarchyKey().getDescendant().getId()).collect(Collectors.toList());
         System.out.println(descendantIds);
-        hierarchyRepository.deleteOldHierarchies(descendantIds, nodeId);
+        //else there are no descendants to change
+        if(!descendantIds.isEmpty()) {
+            hierarchyRepository.deleteOldHierarchies(descendantIds, nodeId);
+        }
     }
 
 
