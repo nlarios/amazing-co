@@ -96,6 +96,8 @@ The disadvantage of this approach is the extra space that is needed for the node
 An Integration test for each API call was implemented. 
 The tests are in AmazingControllerIntegrationTests in amazing-application module
 
+It was a conscious decision not to implement any Unit test, because the service aren't complicated enough. So every case is covered with integration tests.
+
 ## Future steps
 
 The next step in order to make this solution even better, is to cache the results of our queries in a redis cache. This is why I included a redis docker container in the docker-compose file.
