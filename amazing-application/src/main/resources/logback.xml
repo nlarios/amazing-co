@@ -15,15 +15,9 @@
     <logger name="org.hibernate" level="INFO" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
-    <!--<logger name="org.hibernate.type" level="TRACE" additivity="false">
-        <appender-ref ref="STDOUT"/>
-    </logger>-->
 
-    <logger name="gr.cite.geopolis.core" level="DEBUG" additivity="false">
-        <appender-ref ref="STDOUT"/>
-    </logger>
 
-    <logger name="gr.cite.gwd.core" level="DEBUG" additivity="false">
+    <logger name="com.tradeshift.amazing" level="DEBUG" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
 

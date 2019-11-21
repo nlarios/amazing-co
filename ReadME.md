@@ -17,11 +17,12 @@
 ├── amazing-domain
 |       Contains the entities and the dtos of the application.
 |       Models used throughout the application.
+|
 ├── amazing-persistence
 |       Database repositories.  
 |
 ├── amazing-parent
-|        Module for dependency management of the application.
+|        Module used for dependency management of the application.
 └──
 ````
 
@@ -30,7 +31,25 @@ The schema of the database is:
 
 ![alt text](./amazing_dbEER.png)
 
-The id is numeric type for debugging purposes. UUID would be my choice in a production environment.
+### Table Entities 
+```$xslt
+* node (Node entity)
+    - id
+    - parent_id  // Many to One relation with the id of the same table node that shoes the parent of the node
+    - root_id   // The id of root node, Many to One relation with the same table
+    - name
+    - height
+
+* node_hierarchy (Hierararchy entity)
+    - ancestor_id       //relation to id of node table that shows the ancestor 
+    - descendant_id     //relation to id of node table that shows the descendant 
+    - depth             //The hierarchy gap between ancestor and descendant 
+```
+The root node is stored in the node table without a parentId and with rootId = id
+
+The id is numeric for debugging purposes. UUID type would be used in a production environment.
+
+./Docker/amazing-db/init_scripts/import.sql script was used to initialize the Amazing database and store some sample data
 
 ## API
 
@@ -45,6 +64,8 @@ API calls:
     `GET /nodes/descendants/{id}`
     
     path variable id : The id of the node whose descendants the user wants to get as a response
+    
+    ex.:` GET http://localhost:8080/nodes/descendants/0`
 
 * Change parent of a node (move subTree)
 
@@ -54,6 +75,7 @@ API calls:
     
     request parameter parentId : The id of the new parent Node that we want to move the node and it's subtree
 
+    ex.:` PUT http://localhost:8080/nodes/3?parentId=2`
 ## Solution
 
 In order to achieve high performance for the two queries the "Closure Tables" approach was followed.
