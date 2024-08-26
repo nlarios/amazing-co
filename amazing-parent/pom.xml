@@ -25,7 +25,7 @@
         <amazing-core.version>1.0-SNAPSHOT</amazing-core.version>
         <amazing-persistence.version>1.0-SNAPSHOT</amazing-persistence.version>
         <model-mapper.version>2.3.5</model-mapper.version>
-        <swagger.version>2.9.2</swagger.version>
+        <swagger.version>2.10.0</swagger.version>
     </properties>
 
     <dependencyManagement>
